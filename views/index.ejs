@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+
+    <!-- All CSS & Bootstrap CDN Link -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/styles/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div class="container px-1 px-sm-4 py-5 mx-auto">
+        <div class="row d-flex justify-content-center">
+            
+
+            <div class="card text-center pt-4 border-0">
+                <section class="header">
+                    <div class="container">
+                        <h1 class="weather-header">WEATHER APP</h1>
+                    </div>
+                </section>
+
+                <form action ="/" method = "post" class="weatherForm mx-4 my-3" style="position: relative;">
+                    <input id="cityName" class="form-control" placeholder="City/State Name" type="text" name="city" placeholder="City/State" autocomplete="off" >
+                    <button class="border-0 m-1 rounded" type="submit" style="position: absolute;right: 5px;top: 0;bottom: 0;background: transparent;"><i class="fa fa-search" style ="color: #6C757D;"></i></button>
+                </form>
+                
+                <% if(weatherData !== null ){ %>
+                <h4 class="mb-0"><%= cityName %></h4>
+                <small class="text-muted mb-2"><%= countryName %></small>
+                <h2 class="large-font" title="Feels Like: <%= feels_like %>&deg;C"><%= temp %> &deg;C</h2>
+                <small class="text-muted"><%= date %>, <%= currentDay %></small>
+                <div class="text-center mb-1">
+                    <img class="" src="<%= icon %>">
+                    <h5><%= desc.toUpperCase() %></h5>
+                </div>
+
+                <div class="row d-flex px-3 mt-auto">
+                    <% for (let i = 0; i < fiveDaysForecast.length; i++) { %>   
+                        <% if((new Date(fiveDaysForecast[i].dt_txt).toLocaleString('en-US', { weekday: 'short',})) !== (currentDay)){ %>
+
+                    <div class="d-flex flex-column block first-block" title="<%= fiveDaysForecast[i].weather[0].description %>">
+                        <small class="text-muted mb-0"><%= new Date(fiveDaysForecast[i].dt_txt).toLocaleString('en-US', { weekday: 'short',}) %></small>
+                        <div class="text-center"><img class="symbol-img" src="https://openweathermap.org/img/wn/<%= fiveDaysForecast[i].weather[0].icon %>@2x.png"></div>
+                        <h6><strong><%= fiveDaysForecast[i].main.temp %> &deg;C</strong></h6>
+                    </div>
+                    
+                    <% } %>
+                <% } %>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+    <% } %>
+
+    <% if(error !== null){ %>
+        <p><%= error %></p>
+    <% } %>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</body>
+
+</html>
